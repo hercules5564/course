@@ -1,7 +1,7 @@
 const { Router }=require("express");
 const userRouter=Router();
 const jwt=require("jsonwebtoken");
-const JWT_USER_SECRET="aladlddf";
+const {JWT_USER_SECRET}=require("../config");
 const {UserModel}=require("../db");
 const {z}=require("zod");
 const  bcrypt=require("bcrypt");
@@ -42,30 +42,6 @@ userRouter.post("/signup",async function(req,res)
     });
   }
 });
-
-
-
-
-
-
-
-// function userauth(req,res,next)
-// {
-// const token = req.headers.token;
-//   const decoded = jwt.verify(token, JWT_SECRET);
-//   if (decoded) {
-//     req.userId = decoded.id;
-//     next();
-//   } else {
-//     res.json({
-//       message: "you are not allowed",
-//     });
-//   }
-// }
-
-
-
-
 userRouter.post("/signin",async function(req,res)
 {
 const email = req.body.email;

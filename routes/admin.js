@@ -1,10 +1,12 @@
 const {Router}=require("express");
 const adminRouter=Router();
 const jwt=require("jsonwebtoken");
-const JWT_ADMIN_SECRET="asjffsjl";
+const {JWT_ADMIN_SECRET}=require("../config");
 const {z}=require("zod");
 const {adminModel}=require("../db");
+const {coursesModel}=require("../db");
 const bcrypt=require("bcrypt");
+const {userMiddleWare}=require("../middlewares/admin")
 adminRouter.post("/signup",async function(req,res)
 {
 const requiredBody = z.object({
@@ -72,22 +74,54 @@ if (!user) return res.status(403).json({ message: "incorrect credentials" });
 })
  
 
-adminRouter.get("/course",function(req,res)
+adminRouter.get("/course",userMiddleWare,async function(req,res)
 {
+const adminId=req.userId;
+const {title,decription,price,imageUrl}=req.body;
+
+const course =await coursesModel.create({
+  title:String,
+    description:String,
+    price:Number,
+    imageUrl:String,
+    creatorId:adminId
+})
 res.json({
-message:"message these are all courses"
+    message:"course created",
+    courseID:course.id
 })
 })
-adminRouter.put("/course",function(req,res)
+adminRouter.put("/course",async function(req,res)
 {
+
+  const adminId=req.userId;
+  const {title,decription,price,imageUrl}=req.body;
+const course =await coursesModel.updateOne({
+  _id:courseId,
+courseID:adminId
+},{
+  title:String,
+    description:String,
+    price:Number,
+    imageUrl:String,
+    creatorId:adminId
+})
 res.json({
- message:"change courses endpoint"
+    message:"course created",
+    courseID:course.id
 })
 })
-adminRouter.get("/course/bulk",function(req,res)
+adminRouter.get("/course/bulk",async function(req,res)
 {
+ const adminId = req.userId;
+
+    const courses = await courseModel.find({
+        creatorId: adminId 
+    });
+
     res.json({
-        message:"courses list endpoint"
+        message: "Course updated",
+        courses
     })
 })
 module.exports={
