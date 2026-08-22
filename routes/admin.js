@@ -3,10 +3,9 @@ const adminRouter=Router();
 const jwt=require("jsonwebtoken");
 const {JWT_ADMIN_SECRET}=require("../config");
 const {z}=require("zod");
-const {adminModel}=require("../db");
-const {coursesModel}=require("../db");
+const {adminModel,coursesModel}=require("../db");
 const bcrypt=require("bcrypt");
-const {userMiddleWare}=require("../middlewares/admin")
+const {adminMiddleWare}=require("../middlewares/admin");
 adminRouter.post("/signup",async function(req,res)
 {
 const requiredBody = z.object({
@@ -39,6 +38,7 @@ const requiredBody = z.object({
       message: "You have signed up",
     });
   } catch (e) {
+    console.log(e);
     res.json({
       message: "something went wrong",
     });
@@ -74,53 +74,53 @@ if (!user) return res.status(403).json({ message: "incorrect credentials" });
 })
  
 
-adminRouter.get("/course",userMiddleWare,async function(req,res)
+
+adminRouter.post("/course",adminMiddleWare,async function(req,res)
 {
 const adminId=req.userId;
-const {title,decription,price,imageUrl}=req.body;
+const {title,description,price,imageUrl}=req.body;
 
 const course =await coursesModel.create({
-  title:String,
-    description:String,
-    price:Number,
-    imageUrl:String,
+    title:title,
+    description:description,
+    price:price,
+    imageUrl:imageUrl,
     creatorId:adminId
 })
 res.json({
     message:"course created",
-    courseID:course.id
+    courseId:course._id
 })
 })
-adminRouter.put("/course",async function(req,res)
+adminRouter.put("/course",adminMiddleWare,async function(req,res)
 {
-
   const adminId=req.userId;
-  const {title,decription,price,imageUrl}=req.body;
-const course =await coursesModel.updateOne({
+  const {courseId,title,description,price,imageUrl}=req.body;
+
+await coursesModel.updateOne({
   _id:courseId,
-courseID:adminId
+  creatorId:adminId
 },{
-  title:String,
-    description:String,
-    price:Number,
-    imageUrl:String,
-    creatorId:adminId
+    title:title,
+    description:description,
+    price:price,
+    imageUrl:imageUrl
 })
 res.json({
-    message:"course created",
-    courseID:course.id
+    message:"course updated",
+    courseId:courseId
 })
 })
-adminRouter.get("/course/bulk",async function(req,res)
+adminRouter.get("/course/bulk",adminMiddleWare,async function(req,res)
 {
  const adminId = req.userId;
 
-    const courses = await courseModel.find({
+    const courses = await coursesModel.find({
         creatorId: adminId 
     });
 
     res.json({
-        message: "Course updated",
+        message: "courses fetched",
         courses
     })
 })

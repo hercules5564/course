@@ -37,6 +37,7 @@ userRouter.post("/signup",async function(req,res)
       message: "You have signed up",
     });
   } catch (e) {
+    console.log(e);
     res.json({
       message: "email already exists",
     });

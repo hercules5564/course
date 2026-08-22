@@ -104,7 +104,7 @@ app.use("/api/v1/admin",adminRouter);
 async function main()
 {
 await mongoose.connect(process.env.DATABASE_URL);
-app.listen(3000, () => {
+app.listen(5173, () => {
   console.log(`Server is running `);
 });
 }

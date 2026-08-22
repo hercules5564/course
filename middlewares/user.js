@@ -4,15 +4,14 @@ const {JWT_USER_SECRET}=require("../config");
 function userMiddleWare(req,res,next)
 {
     const token=req.headers.token;
-    const decoded=jwt.verify(token,JWT_USER_SECRET);
-    if(decoded)
-    {
-        req.userID=decode.id;
+    try{
+        const decoded=jwt.verify(token,JWT_USER_SECRET);
+        req.userId=decoded.id;
         next();
     }
-    else{
+    catch(e){
         res.status(403).json({
-            message:"you have signed in"
+            message:"you are not signed in"
         })
     }
 }
