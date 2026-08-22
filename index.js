@@ -1,3 +1,4 @@
+
 const express=require("express");
 const app=express();
 const dotenv = require('dotenv');
@@ -5,16 +6,7 @@ dotenv.config();
 const { userRouter }=require("./routes/user");
 const {coursesRouter}=require("./routes/Courses");
 const {adminRouter}=require("./routes/admin");
-const {z}=require("zod");
-
-const bcrypt=require("bcrypt");
-const jwt=require("jsonwebtoken");
 const mongoose=require("mongoose");
-// const {adminModel}=require("../db");
-const {userModel,adminModel,coursesModel,purchaseModel}=require("./db");
-
-
-
 app.use(express.json());
 
 app.use("/api/v1/user",userRouter);

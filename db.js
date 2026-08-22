@@ -1,24 +1,22 @@
 const mongoose=require("mongoose");
-const { object } = require("zod");
 const Schema=mongoose.Schema;
-const ObjectID=Schema.Types.ObjectId;
+const ObjectID=mongoose.Types.ObjectId;
 
 const user=new Schema({
-    _id:ObjectID,
     email:{type:String,unique:true},
     firstName:String,
     lastName:String,
     password:String,
 })
 const admin=new Schema({
-_id:ObjectID,
+
 email:{type:String,unique:true},
-firstName:String,
-LastName:String,
 password:String,
+firstName:String,
+lastName:String,
+
 })
 const courses=new Schema({
-    _id:ObjectID,
     title:String,
     description:String,
     price:Number,
@@ -26,7 +24,6 @@ const courses=new Schema({
     creatorId:ObjectID,
 })
 const purchase=new Schema({
-   _id:ObjectID,
    courseId:ObjectID,
    userId:ObjectID,
 
@@ -37,8 +34,8 @@ const coursesModel=mongoose.model("courses",courses);
 const purchaseModel=mongoose.model("purchases",purchase);
 
 module.exports={
-    UserModel:UserModel,
-    adminModel:adminModel,
-    coursesModel:coursesModel,
-    purchaseModel:purchaseModel,
+    UserModel,
+    adminModel,
+    coursesModel,
+    purchaseModel,
 }
