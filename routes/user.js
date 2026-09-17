@@ -2,9 +2,10 @@ const { Router }=require("express");
 const userRouter=Router();
 const jwt=require("jsonwebtoken");
 const {JWT_USER_SECRET}=require("../config");
-const {UserModel}=require("../db");
+const {UserModel, purchaseModel,courseModel}=require("../db");
 const {z}=require("zod");
 const  bcrypt=require("bcrypt");
+const {userMiddleware}=require("../middlewares/user")
 userRouter.post("/signup",async function(req,res)
 {
  const requiredBody = z.object({
@@ -73,9 +74,26 @@ if (!user) return res.status(403).json({ message: "incorrect credentials" });
 
 
 
-userRouter.post("/purchases",function(req,res)
+userRouter.get("/purchases",userMiddleware,async function(req,res)
 {
+  const userId=req.userId;
+const purchases=await purchaseModel.find({
+userId,
+});
 
+    let purchasedCourseIds = [];
+     for (let i = 0; i<purchases.length;i++){ 
+        purchasedCourseIds.push(purchases[i].courseId)
+    }
+
+ const coursesData = await courseModel.find({
+        _id: { $in: purchasedCourseIds }
+    })
+
+res.json({
+  purchases,
+  coursesData
+})
 })
 module.exports={
   userRouter:userRouter

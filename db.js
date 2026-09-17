@@ -24,8 +24,8 @@ const courses=new Schema({
     creatorId:ObjectID,
 })
 const purchase=new Schema({
-   courseId:ObjectID,
-   userId:ObjectID,
+   courseId:mongoose.Types.ObjectId,
+   userId:mongoose.Types.ObjectId,
 
 })
 const UserModel=mongoose.model("users",user);
