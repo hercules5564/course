@@ -3,7 +3,7 @@ const adminRouter=Router();
 const jwt=require("jsonwebtoken");
 const {JWT_ADMIN_SECRET}=require("../config");
 const {z}=require("zod");
-const {adminModel,coursesModel}=require("../db");
+const {adminModel,courseModel}=require("../db");
 const bcrypt=require("bcrypt");
 const {adminMiddleWare}=require("../middlewares/admin");
 adminRouter.post("/signup",async function(req,res)
@@ -80,7 +80,7 @@ adminRouter.post("/course",adminMiddleWare,async function(req,res)
 const adminId=req.userId;
 const {title,description,price,imageUrl}=req.body;
 
-const course =await coursesModel.create({
+const course =await courseModel.create({
     title:title,
     description:description,
     price:price,
@@ -97,7 +97,7 @@ adminRouter.put("/course",adminMiddleWare,async function(req,res)
   const adminId=req.userId;
   const {courseId,title,description,price,imageUrl}=req.body;
 
-await coursesModel.updateOne({
+await courseModel.updateOne({
   _id:courseId,
   creatorId:adminId
 },{
@@ -115,7 +115,7 @@ adminRouter.get("/course/bulk",adminMiddleWare,async function(req,res)
 {
  const adminId = req.userId;
 
-    const courses = await coursesModel.find({
+    const courses = await courseModel.find({
         creatorId: adminId 
     });
 

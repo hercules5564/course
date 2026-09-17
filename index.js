@@ -4,13 +4,13 @@ const app=express();
 const dotenv = require('dotenv');
 dotenv.config();
 const { userRouter }=require("./routes/user");
-const {coursesRouter}=require("./routes/Courses");
+const {courseRouter}=require("./routes/Courses");
 const {adminRouter}=require("./routes/admin");
 const mongoose=require("mongoose");
 app.use(express.json());
 
 app.use("/api/v1/user",userRouter);
-app.use("/api/v1/courses",coursesRouter);
+app.use("/api/v1/courses",courseRouter);
 app.use("/api/v1/admin",adminRouter);
 
 // app.post("/adminsignup",async function(req,res)

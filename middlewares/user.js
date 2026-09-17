@@ -1,7 +1,7 @@
 const jwt=require("jsonwebtoken");
 const {JWT_USER_SECRET}=require("../config");
 
-function userMiddleWare(req,res,next)
+function userMiddleware(req,res,next)
 {
     const token=req.headers.token;
     try{
@@ -16,5 +16,5 @@ function userMiddleWare(req,res,next)
     }
 }
 module.exports={
-    userMiddleWare
+    userMiddleware
 }
